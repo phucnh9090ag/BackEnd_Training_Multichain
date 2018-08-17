@@ -1,4 +1,5 @@
-﻿using Multichain.Models;
+﻿using Multichain.Models.InputControler;
+using Multichain.Models.Services.Multichain;
 using System.Web.Http;
 
 namespace Multichain.Controllers

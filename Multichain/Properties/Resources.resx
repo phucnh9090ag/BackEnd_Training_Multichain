@@ -147,4 +147,10 @@
   <data name="SendMailError" xml:space="preserve">
     <value>Error send OTP to mail</value>
   </data>
+  <data name="HeaderMail" xml:space="preserve">
+    <value>OTP code: </value>
+  </data>
+  <data name="LoginFail" xml:space="preserve">
+    <value>Login Fail</value>
+  </data>
 </root>

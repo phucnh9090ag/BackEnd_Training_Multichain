@@ -6,9 +6,9 @@ using System.Net.Mail;
 using System.Web;
 using System.Web.Configuration;
 
-namespace Multichain.Models
+namespace Multichain.Models.Services.Mail
 {
-    public class MailService
+    public class MailService: IMailServices
     {
         private SmtpClient smtpClient;
         public MailService()
@@ -26,12 +26,12 @@ namespace Multichain.Models
 
             smtpClient.EnableSsl = true;
         }
-        internal bool SendEmail(string OTP, string toEmail)
+        public bool SendEmail(string context, string To)
         {
-            string mailBodyhtml ="<p>OTP code: " + OTP + "</p>";
+            string mailBodyhtml =Properties.Resources.HeaderMail + context;
             string fromEmail = WebConfigurationManager.AppSettings["MailFrom"];
             var Subject = WebConfigurationManager.AppSettings["SubjectMail"];
-            var msg = new MailMessage(fromEmail, toEmail, Subject, mailBodyhtml);
+            var msg = new MailMessage(fromEmail, To, Subject, mailBodyhtml);
 
             msg.IsBodyHtml = true;
  

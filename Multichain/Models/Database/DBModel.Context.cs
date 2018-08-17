@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Multichain.Models
+namespace Multichain.Models.Database
 {
     using System;
     using System.Data.Entity;

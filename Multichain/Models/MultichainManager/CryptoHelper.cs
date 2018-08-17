@@ -17,7 +17,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MultiChain.Models
+namespace MultiChain.Models.MultichainManager
 {
     public static class CryptoHelper
     {

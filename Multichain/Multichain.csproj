@@ -239,6 +239,15 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Models\Database\Database.cs" />
+    <Compile Include="Models\Services\Confirm\IConfirmService.cs" />
+    <Compile Include="Models\Database\IDatabase.cs" />
+    <Compile Include="Models\Services\Login\ILoginService.cs" />
+    <Compile Include="Models\Services\Mail\IMailServices.cs" />
+    <Compile Include="Models\Services\SignUp\ISignUpService.cs" />
+    <Compile Include="Models\Services\Confirm\ConfirmService.cs" />
+    <Compile Include="Models\Services\Login\LoginService.cs" />
+    <Compile Include="Models\Services\SignUp\SignUpService.cs" />
     <Compile Include="Models\Token\BasicAuthorizationAttributeApp.cs" />
     <Compile Include="Models\Token\BasicAuthorizationAttributeLogin.cs" />
     <Compile Include="Models\Token\BearerTokenAuthorization.cs" />
@@ -249,31 +258,31 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Account.cs">
+    <Compile Include="Models\Database\Account.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Address.cs">
+    <Compile Include="Models\Database\Address.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MultichainManager\AddressManager.cs" />
     <Compile Include="Models\MultichainManager\Admin.cs" />
     <Compile Include="Models\MultichainManager\AssetManager.cs" />
     <Compile Include="Models\Secure\AuthSecure.cs" />
-    <Compile Include="Models\Interface\IMultichainServices.cs" />
-    <Compile Include="Models\Interface\IUserService.cs" />
-    <Compile Include="Models\enum\Permission.cs" />
+    <Compile Include="Models\Services\Multichain\IMultichainServices.cs" />
+    <Compile Include="Models\Services\User\IUserService.cs" />
+    <Compile Include="Models\Enum\Permission.cs" />
     <Compile Include="Models\MultichainManager\CryptoHelper.cs" />
-    <Compile Include="Models\DBModel.Context.cs">
+    <Compile Include="Models\Database\DBModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DBModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\DBModel.cs">
+    <Compile Include="Models\Database\DBModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\DBModel.Designer.cs">
+    <Compile Include="Models\Database\DBModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DBModel.edmx</DependentUpon>
@@ -281,14 +290,14 @@
     <Compile Include="Models\MultichainManager\Hex.cs" />
     <Compile Include="Models\InputControler\Input.cs" />
     <Compile Include="Models\MultichainManager\JsonRpcClient.cs" />
-    <Compile Include="Models\Services\MailService.cs" />
+    <Compile Include="Models\Services\Mail\MailService.cs" />
     <Compile Include="Models\MultichainManager\MultichainHelper.cs" />
-    <Compile Include="Models\Services\MultichainServices.cs" />
+    <Compile Include="Models\Services\Multichain\MultichainServices.cs" />
     <Compile Include="Models\MultichainManager\PermissionManager.cs" />
     <Compile Include="Models\MultichainManager\ServiceBase.cs" />
     <Compile Include="Models\MultichainManager\StreamManager.cs" />
     <Compile Include="Models\MultichainManager\TransactionManager.cs" />
-    <Compile Include="Models\Services\UserService.cs" />
+    <Compile Include="Models\Services\User\UserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -309,12 +318,12 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Models\DBModel.Context.tt">
+    <Content Include="Models\Database\DBModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>DBModel.edmx</DependentUpon>
       <LastGenOutput>DBModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\DBModel.tt">
+    <Content Include="Models\Database\DBModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>DBModel.edmx</DependentUpon>
       <LastGenOutput>DBModel.cs</LastGenOutput>
@@ -345,11 +354,11 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EntityDeploy Include="Models\DBModel.edmx">
+    <EntityDeploy Include="Models\Database\DBModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>DBModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\DBModel.edmx.diagram">
+    <Content Include="Models\Database\DBModel.edmx.diagram">
       <DependentUpon>DBModel.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />

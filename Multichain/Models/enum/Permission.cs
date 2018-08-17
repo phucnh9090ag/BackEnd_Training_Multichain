@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Multichain.Models
+namespace Multichain.Models.Enum
 {
     public enum Permission
     {

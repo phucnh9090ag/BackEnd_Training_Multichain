@@ -1,11 +1,15 @@
 ﻿using Multichain.Controllers;
+using Multichain.Models.Database;
+using Multichain.Models.Enum;
+using Multichain.Models.InputControler;
 using MultiChain.Models;
+using MultiChain.Models.MultichainManager;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
 using System.Web.Configuration;
 
-namespace Multichain.Models
+namespace Multichain.Models.Services.Multichain
 {
     public class MultichainServices:IMultichainServices
     {
@@ -70,7 +74,7 @@ namespace Multichain.Models
                     JObject.FromObject(new { error = Properties.Resources.AccountNotFound });
         }
 
-        internal Address CreateAddress()
+        public Address CreateAddress()
         {
             var json = JObject.Parse(addrMng.CreateKeypairs());
 

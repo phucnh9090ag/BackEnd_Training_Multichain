@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace Multichain
+namespace Multichain.Models.Token
 {
     public class BearerTokenAuthorization: OAuthAuthorizationServerProvider
     {

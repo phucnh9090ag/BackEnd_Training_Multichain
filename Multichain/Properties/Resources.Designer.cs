@@ -106,11 +106,29 @@ namespace Multichain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OTP code: .
+        /// </summary>
+        internal static string HeaderMail {
+            get {
+                return ResourceManager.GetString("HeaderMail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Susscess issue asset.
         /// </summary>
         internal static string IssueSucess {
             get {
                 return ResourceManager.GetString("IssueSucess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login Fail.
+        /// </summary>
+        internal static string LoginFail {
+            get {
+                return ResourceManager.GetString("LoginFail", resourceCulture);
             }
         }
         

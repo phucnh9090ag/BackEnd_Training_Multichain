@@ -1,11 +1,16 @@
-﻿using Multichain.Models;
+﻿using Multichain.Models.Database;
 using System.Web.Configuration;
 
-namespace FinalTestAPI.Model.Models
+namespace MultiChain.Models.Secure
 {
     public class AuthSecure
     {
-        DBEntity database = new DBEntity();
+        private readonly IDatabase database;
+
+        public AuthSecure()
+        {
+            database = new Database();
+        }
         public bool AuthApp(string username, string password)
         {
             return username == WebConfigurationManager.AppSettings["usenameApp"] && password == WebConfigurationManager.AppSettings["passwordApp"];
@@ -13,7 +18,7 @@ namespace FinalTestAPI.Model.Models
 
         public bool AuthAccount(string username, string password)
         {
-            var acc = database.Accounts.Find(username);
+            var acc = database.FindAccountWithEmail(username);
             if (acc != null)
             {
                 if (acc.password == password)

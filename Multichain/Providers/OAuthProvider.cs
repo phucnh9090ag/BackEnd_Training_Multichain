@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Owin.Security.OAuth;
 using Multichain.Models;
+using Multichain.Models.Services.User;
 
 namespace Multichain.Providers
 {
