@@ -1,5 +1,4 @@
 ﻿using Multichain.Models.Database;
-using Multichain.Models.InputControler;
 using Multichain.Models.Services.Multichain;
 using System;
 
@@ -18,7 +17,7 @@ namespace Multichain.Models.Services.Confirm
             multichainServices = new MultichainServices();
         }
 
-        public object Confirm(Input.ComfirmInput input)
+        public object Confirm(ComfirmInput input)
         {
             var account = database.FindAccountWithOTP(input.OTP);
             if (account != null)

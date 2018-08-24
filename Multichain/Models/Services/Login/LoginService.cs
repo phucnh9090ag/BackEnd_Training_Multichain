@@ -1,5 +1,4 @@
 ﻿using Multichain.Models.Database;
-using Multichain.Models.InputControler;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Specialized;
@@ -17,7 +16,8 @@ namespace Multichain.Models.Services.Login
         {
             database = new Database.Database();
         }
-        public object Login(Input.LoginInput input)
+
+        public object Login(LoginInput input)
         {
             using (var wb = new WebClient())
             {
@@ -28,21 +28,28 @@ namespace Multichain.Models.Services.Login
 
                 try
                 { 
-                    var response = wb.UploadValues(WebConfigurationManager.AppSettings["tokenURL"], WebConfigurationManager.AppSettings["tokenMothod"], data);
+                    var response = wb.UploadValues(
+                        address: WebConfigurationManager.AppSettings["tokenURL"], 
+                        method: WebConfigurationManager.AppSettings["tokenMothod"], 
+                        data: data
+                    );
+
                     string responseInString = Encoding.UTF8.GetString(response);
 
-                    var account = database.FindAccountWithEmail(input.email);
+                    var account = database.FindAccountWithEmail(
+                        email: input.email
+                    );
+
                     if (account != null)
                     {
                         account.beartoken = JObject.Parse(responseInString)["access_token"].ToString();
                         database.getDatabase().SaveChanges();
                     }
-                    return
-                        JObject.Parse(responseInString);
+                    return responseInString;
                 }
                 catch (Exception ex)
                 {
-                    return JObject.FromObject(new { message = Properties.Resources.LoginFail, Error = ex.Message });
+                    return ex.Message;
                 }
                 
             }

@@ -240,6 +240,14 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Models\Database\Database.cs" />
+    <Compile Include="Models\InputControler\ConfirmInput.cs" />
+    <Compile Include="Models\InputControler\CreateTransactionInput.cs" />
+    <Compile Include="Models\InputControler\GrantPermissionInput.cs" />
+    <Compile Include="Models\InputControler\IssueAssetInput.cs" />
+    <Compile Include="Models\InputControler\LoginInput.cs" />
+    <Compile Include="Models\InputControler\SendTransactionInput.cs" />
+    <Compile Include="Models\InputControler\SignTransactionInput.cs" />
+    <Compile Include="Models\InputControler\SignUpInput.cs" />
     <Compile Include="Models\Services\Confirm\IConfirmService.cs" />
     <Compile Include="Models\Database\IDatabase.cs" />
     <Compile Include="Models\Services\Login\ILoginService.cs" />
@@ -288,7 +296,6 @@
       <DependentUpon>DBModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\MultichainManager\Hex.cs" />
-    <Compile Include="Models\InputControler\Input.cs" />
     <Compile Include="Models\MultichainManager\JsonRpcClient.cs" />
     <Compile Include="Models\Services\Mail\MailService.cs" />
     <Compile Include="Models\MultichainManager\MultichainHelper.cs" />

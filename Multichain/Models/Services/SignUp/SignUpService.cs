@@ -1,5 +1,4 @@
 ﻿using Multichain.Models.Database;
-using Multichain.Models.InputControler;
 using Multichain.Models.Services.Mail;
 using Newtonsoft.Json.Linq;
 using System;
@@ -27,7 +26,7 @@ namespace Multichain.Models.Services.SignUp
             rand = new Random();
         }
 
-        public object SignUp(Input.SignUpInput input)
+        public object SignUp(SignUpInput input)
         {
             account.email = input.email;
             account.password = input.password;

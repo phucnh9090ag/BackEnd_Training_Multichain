@@ -1,5 +1,4 @@
-﻿using Multichain.Models.InputControler;
-using Multichain.Models.Services.Multichain;
+﻿using Multichain.Models.Services.Multichain;
 using System.Web.Http;
 
 namespace Multichain.Controllers
@@ -7,11 +6,11 @@ namespace Multichain.Controllers
     [Authorize]
     public class MultichainController : ApiController
     {
-        private readonly IMultichainServices mult;
+        private readonly IMultichainServices multichainServices;
 
         public MultichainController()
         {
-            mult = new MultichainServices();
+            multichainServices = new MultichainServices();
         }
 
         [Route("api/Multichain/ImportAddress")]
@@ -19,58 +18,58 @@ namespace Multichain.Controllers
         [HttpPost]
         public IHttpActionResult ImportAddress()
         {
-            mult.SetRequset(this);
-            var result = mult.ImportAddress();
+            multichainServices.SetRequset(this);
+            var result = multichainServices.ImportAddress();
             return Ok(result);
         }
 
         [Route("api/Multichain/GrantPermission")]
         [Authorize]
         [HttpPut]
-        public IHttpActionResult GrantPermission([FromBody]Input.GrantPermissionInput input)
+        public IHttpActionResult GrantPermission([FromBody]GrantPermissionInput input)
         {
-            mult.SetRequset(this);
-            var result = mult.GrantPermisstion(input);
+            multichainServices.SetRequset(this);
+            var result = multichainServices.GrantPermisstion(input);
             return Ok(result);
         }
 
         [Route("api/Multichain/IssueAsset")]
         [Authorize]
         [HttpPut]
-        public IHttpActionResult IssueAsset([FromBody]Input.IssueAssetInput input)
+        public IHttpActionResult IssueAsset([FromBody]IssueAssetInput input)
         {
-            mult.SetRequset(this);
-            var result = mult.IssueAsset(input);
+            multichainServices.SetRequset(this);
+            var result = multichainServices.IssueAsset(input);
             return Ok(result);
         }
 
         [Route("api/Multichain/Transaction")]
         [Authorize]
         [HttpPost]
-        public IHttpActionResult CreateTransaction([FromBody]Input.CreateTransactionInput input)
+        public IHttpActionResult CreateTransaction([FromBody]CreateTransactionInput input)
         {
-            mult.SetRequset(this);
-            var result = mult.CreateTransaction(input);
+            multichainServices.SetRequset(this);
+            var result = multichainServices.CreateTransaction(input);
             return Ok(result);
         }
 
         [Route("api/Multichain/Transaction")]
         [Authorize]
         [HttpPut]
-        public IHttpActionResult SignTransaction([FromBody]Input.SignTransactionInput input)
+        public IHttpActionResult SignTransaction([FromBody]SignTransactionInput input)
         {
-            mult.SetRequset(this);
-            var result = mult.SignTransaction(input);
+            multichainServices.SetRequset(this);
+            var result = multichainServices.SignTransaction(input);
             return Ok(result);
         }
 
         [Route("api/Multichain/Transaction")]
         [Authorize]
         [HttpPatch]
-        public IHttpActionResult SendTransaction([FromBody]Input.SendTransactionInput input)
+        public IHttpActionResult SendTransaction([FromBody]SendTransactionInput input)
         {
-            mult.SetRequset(this);
-            var result = mult.SendTransaction(input);
+            multichainServices.SetRequset(this);
+            var result = multichainServices.SendTransaction(input);
             return Ok(result);
         }
     }

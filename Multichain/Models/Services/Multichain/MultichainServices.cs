@@ -1,8 +1,6 @@
 ﻿using Multichain.Controllers;
 using Multichain.Models.Database;
 using Multichain.Models.Enum;
-using Multichain.Models.InputControler;
-using MultiChain.Models;
 using MultiChain.Models.MultichainManager;
 using Newtonsoft.Json.Linq;
 using System;
@@ -14,101 +12,100 @@ namespace Multichain.Models.Services.Multichain
     public class MultichainServices:IMultichainServices
     {
 
-        MultichainController MultCtrl;
+        MultichainController multichainControler;
         DBEntity database;
 
-        string chainname = WebConfigurationManager.AppSettings["chainname"];
-        string rpc_userame = WebConfigurationManager.AppSettings["rpc_userame"];
-        string rpc_password = WebConfigurationManager.AppSettings["rpc_password"];
-        string networdid = WebConfigurationManager.AppSettings["networdid"];
-        int port = Convert.ToInt32(WebConfigurationManager.AppSettings["port"]);
+        private string chainName;
+        private string rpcName;
+        private string rpcPassword;
+        private string nodeIP;
+        private int port;
 
-        Account _acc;
-
-
-        JsonRpcClient jsonRPCClient;
-        AddressManager addrMng;
-        PermissionManager permissonMng;
-        AssetManager assetMng;
-        TransactionManager transactionMng;
-
+        private Account account;
+        private JsonRpcClient jsonRPCClient;
+        private AddressManager addressManager;
+        private PermissionManager permissionManager;
+        private AssetManager assetManager;
+        private TransactionManager transactionManager;
+              
         public MultichainServices()
         {
             this.database = new DBEntity();
 
-            jsonRPCClient = new JsonRpcClient(rpc_userame, rpc_password, networdid, port, chainname);
+            chainName = WebConfigurationManager.AppSettings["chainname"];
+            rpcName = WebConfigurationManager.AppSettings["rpc_userame"];
+            rpcPassword = WebConfigurationManager.AppSettings["rpc_password"];
+            nodeIP = WebConfigurationManager.AppSettings["networdid"];
+            port = Convert.ToInt32(WebConfigurationManager.AppSettings["port"]);
 
-            addrMng = new AddressManager(jsonRPCClient);
-            permissonMng = new PermissionManager(jsonRPCClient);
-            assetMng = new AssetManager(jsonRPCClient);
-            transactionMng = new TransactionManager(jsonRPCClient);
+            jsonRPCClient = new JsonRpcClient(
+                rpcName: rpcName, 
+                rpcPassword: rpcPassword,
+                nodeIp: nodeIP,
+                nodePort: port, 
+                chainName: chainName
+            );
+
+            addressManager = new AddressManager(jsonRPCClient);
+            permissionManager = new PermissionManager(jsonRPCClient);
+            assetManager = new AssetManager(jsonRPCClient);
+            transactionManager = new TransactionManager(jsonRPCClient);
         }
 
         public void SetRequset(MultichainController multichainControler)
         {
-            this.MultCtrl = multichainControler;
-            this._acc = AccountRequest();
+            this.multichainControler = multichainControler;
+            this.account = AccountRequest();
         }
-
 
         private Account AccountRequest()
         {
-            var _bearerToken = MultCtrl.Request.Headers.Authorization.ToString().Substring(7);
-            var _acc = database.Accounts.SingleOrDefault(acc => acc.beartoken == _bearerToken);
-            return 
-                _acc;
+            var bearerToken = multichainControler.Request.Headers.Authorization.ToString().Substring(7);
+            var account = database.Accounts.SingleOrDefault(acc => acc.beartoken == bearerToken);
+            return account;
         }
 
         public object ImportAddress()
         {
-            var _addr = CreateAddress();
-            if (_acc != null)
+            var address = CreateAddress();
+            if (account != null)
             {
-                _addr.email = _acc.email;
-                database.Addresses.Add(_addr);
+                address.email = account.email;
+                database.Addresses.Add(address);
                 database.SaveChanges();
-                return JObject.FromObject(new { email = _addr.email, address = _addr.addr});
+                return new { email = address.email, address = address.addr};
             }
             else
-                return 
-                    JObject.FromObject(new { error = Properties.Resources.AccountNotFound });
+                return Properties.Resources.AccountNotFound;
         }
 
         public Address CreateAddress()
         {
-            var json = JObject.Parse(addrMng.CreateKeypairs());
+            var json = JObject.Parse(addressManager.CreateKeypairs());
 
-            var _address = json["result"][0]["address"].ToString();
-            var _privateKey = json["result"][0]["privkey"].ToString();
+            var address = json["result"][0]["address"].ToString();
+            var privateKey = json["result"][0]["privkey"].ToString();
 
-            addrMng.ImportAddress(_address);
-            addrMng.ImportPrivateKey(_privateKey);
+            addressManager.ImportAddress(address);
+            addressManager.ImportPrivateKey(privateKey);
 
-            return
-                new Address { addr = _address, privateKey = _privateKey };
+            return new Address { addr = address, privateKey = privateKey };
         }
 
-        public object GrantPermisstion(Input.GrantPermissionInput input)
+        public object GrantPermisstion(GrantPermissionInput input)
         { 
             if (!AuthAccountWithBearerToken(input.address))
                 return
-                    JObject.FromObject(new { address = input.address, message = Properties.Resources.UnValidAddress });
+                    Properties.Resources.UnValidAddress;
 
-            var _permission = ReadGrantFromBody(input);
+            var permission = ReadGrantFromBody(input);
 
-            var json = permissonMng.Grant(input.address, _permission);
+            var json = permissionManager.Grant(input.address, permission);
 
-            var isError = (JObject.Parse(json).GetValue("error").ToString() == "");
-
-            if (isError)
-                return
-                    JObject.FromObject(new { address = input.address, permission = _permission, message = Properties.Resources.GrantSucess });
-            else
-                return
-                    JObject.FromObject(new { address = input.address, permission = _permission, message = Properties.Resources.GrantFail });
+            return json;
         }
 
-        private string ReadGrantFromBody(Input.GrantPermissionInput input)
+        private string ReadGrantFromBody(GrantPermissionInput input)
         {
             var permission = "";
 
@@ -167,63 +164,58 @@ namespace Multichain.Models.Services.Multichain
             return permission;
         }
 
-        public object IssueAsset(Input.IssueAssetInput input)
+        public object IssueAsset(IssueAssetInput input)
         {
             if (!AuthAccountWithBearerToken(input.address))
-                return 
-                    JObject.FromObject(new { error = Properties.Resources.AccountNotFound });
+                return Properties.Resources.AccountNotFound;
 
-            var json = assetMng.IssueAsset(input.address, input.assetName, input.qty, input.unit, input.note);
+            var json = assetManager.IssueAsset(input.address, input.assetName, input.qty, input.unit, input.note);
 
-            var isError = (JObject.Parse(json).GetValue("error").ToString() == "");
-
-            if (isError)
-                return
-                    JObject.FromObject(new { message = Properties.Resources.IssueSucess, assetName = input.assetName, qty = input.qty, unit = input.unit, note = input.note });
-            else
-                return
-                    JObject.FromObject(new { message = JObject.Parse(json).GetValue("error").ToString() });
+            return json;
         }
 
-        public object CreateTransaction(Input.CreateTransactionInput input)
+        public object CreateTransaction(CreateTransactionInput input)
         {
             if (!AuthAccountWithBearerToken(input.addressFrom))
-                return 
-                    JObject.FromObject(new { error = Properties.Resources.AccountNotFound });
+                return Properties.Resources.AccountNotFound;
 
-            var result = transactionMng.CreateRawSendFrom(input.addressFrom, input.addressTo, input.assetName, input.qty);
+            var result = transactionManager.CreateRawSendFrom(
+                addressFrom: input.addressFrom, 
+                addressTo: input.addressTo, 
+                assetname: input.assetName, 
+                qty: input.qty
+            );
 
-            return 
-                JObject.Parse(result);
+            return result;
         }
 
-        public object SignTransaction(Input.SignTransactionInput input)
+        public object SignTransaction(SignTransactionInput input)
         {
-            var t = database.Addresses.SingleOrDefault(address => address.email == _acc.email && address.addr == input.addressSign);
+            var t = database.Addresses.SingleOrDefault(address => address.email == account.email && address.addr == input.addressSign);
             if (t == null)
-                return 
-                    JObject.FromObject(new { error = Properties.Resources.AccountNotFound });
+                return Properties.Resources.AccountNotFound;
 
             var privateKey = t.privateKey;
 
-            var result = transactionMng.SignRawTransaction(input.hexValue, privateKey);
-            return 
-                JObject.Parse(result);
+            var result = transactionManager.SignRawTransaction(input.hexValue, privateKey);
+            return result;
         }
 
-        public object SendTransaction(Input.SendTransactionInput input)
+        public object SendTransaction(SendTransactionInput input)
         {
-            var result = transactionMng.SendRawTransaction(input.hexValue);
-            return 
-                JObject.Parse(result);
+            var result = transactionManager.SendRawTransaction(
+                hex: input.hexValue
+            );
+            return result;
         }
 
         private bool AuthAccountWithBearerToken(string inputAddress)
         {
-            var t = database.Addresses.SingleOrDefault(address => address.email == _acc.email && address.addr == inputAddress);
+            var t = database.Addresses.SingleOrDefault(address => address.email == account.email && address.addr == inputAddress);
             if (t == null)
                 return false;
-            return true;
+            else
+                return true;
         }
     }
 }
