@@ -6,11 +6,11 @@ namespace Multichain.Controllers
     [Authorize]
     public class MultichainController : ApiController
     {
-        private readonly IMultichainServices multichainServices;
+        private readonly IMultichainServices _multichainServices;
 
         public MultichainController()
         {
-            multichainServices = new MultichainServices();
+            _multichainServices = new MultichainServices();
         }
 
         [Route("api/Multichain/ImportAddress")]
@@ -18,8 +18,8 @@ namespace Multichain.Controllers
         [HttpPost]
         public IHttpActionResult ImportAddress()
         {
-            multichainServices.SetRequset(this);
-            var result = multichainServices.ImportAddress();
+            _multichainServices.SetRequset(this);
+            var result = _multichainServices.ImportAddress();
             return Ok(result);
         }
 
@@ -28,8 +28,8 @@ namespace Multichain.Controllers
         [HttpPut]
         public IHttpActionResult GrantPermission([FromBody]GrantPermissionInput input)
         {
-            multichainServices.SetRequset(this);
-            var result = multichainServices.GrantPermisstion(input);
+            _multichainServices.SetRequset(this);
+            var result = _multichainServices.GrantPermisstion(input);
             return Ok(result);
         }
 
@@ -38,8 +38,8 @@ namespace Multichain.Controllers
         [HttpPut]
         public IHttpActionResult IssueAsset([FromBody]IssueAssetInput input)
         {
-            multichainServices.SetRequset(this);
-            var result = multichainServices.IssueAsset(input);
+            _multichainServices.SetRequset(this);
+            var result = _multichainServices.IssueAsset(input);
             return Ok(result);
         }
 
@@ -48,8 +48,8 @@ namespace Multichain.Controllers
         [HttpPost]
         public IHttpActionResult CreateTransaction([FromBody]CreateTransactionInput input)
         {
-            multichainServices.SetRequset(this);
-            var result = multichainServices.CreateTransaction(input);
+            _multichainServices.SetRequset(this);
+            var result = _multichainServices.CreateTransaction(input);
             return Ok(result);
         }
 
@@ -58,8 +58,8 @@ namespace Multichain.Controllers
         [HttpPut]
         public IHttpActionResult SignTransaction([FromBody]SignTransactionInput input)
         {
-            multichainServices.SetRequset(this);
-            var result = multichainServices.SignTransaction(input);
+            _multichainServices.SetRequset(this);
+            var result = _multichainServices.SignTransaction(input);
             return Ok(result);
         }
 
@@ -68,8 +68,8 @@ namespace Multichain.Controllers
         [HttpPatch]
         public IHttpActionResult SendTransaction([FromBody]SendTransactionInput input)
         {
-            multichainServices.SetRequset(this);
-            var result = multichainServices.SendTransaction(input);
+            _multichainServices.SetRequset(this);
+            var result = _multichainServices.SendTransaction(input);
             return Ok(result);
         }
     }

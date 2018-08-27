@@ -8,15 +8,15 @@ namespace FinalTestAPI.Model.Controllers
 {
     public class AccountController : ApiController
     {
-        private readonly ISignUpService signupService;
-        private readonly IConfirmService confirmService;
-        private readonly ILoginService loginService;
+        private readonly ISignUpService _signupService;
+        private readonly IConfirmService _confirmService;
+        private readonly ILoginService _loginService;
 
         public AccountController()
         {
-            signupService = new SignUpService(); 
-            confirmService = new ConfirmService();
-            loginService = new LoginService();
+            _signupService = new SignUpService(); 
+            _confirmService = new ConfirmService();
+            _loginService = new LoginService();
         }
 
         [Route("api/Account/SignUp")]
@@ -24,14 +24,14 @@ namespace FinalTestAPI.Model.Controllers
         [HttpPost]
         public IHttpActionResult CreateAccount([FromBody]SignUpInput input)
         {
-            var result = signupService.SignUp(input);
+            var result = _signupService.SignUp(input);
             return Ok(result);
         }
 
         [HttpPut]
         public IHttpActionResult Confirm([FromBody]ComfirmInput input)
         {
-            var result = confirmService.Confirm(input);
+            var result = _confirmService.Confirm(input);
             return Ok(result);
         }
 
@@ -39,7 +39,7 @@ namespace FinalTestAPI.Model.Controllers
         [HttpPost]
         public IHttpActionResult LoginAccount([FromBody]LoginInput input)
         {
-            var result = loginService.Login(input);
+            var result = _loginService.Login(input);
             return Ok(result);
         }
     }

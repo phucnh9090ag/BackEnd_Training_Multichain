@@ -1,4 +1,4 @@
 ﻿public class SendTransactionInput
 {
-    public string hexValue { get; set; }
+    public string HexValue { get; set; }
 }

@@ -12,15 +12,15 @@ namespace Multichain.Models.Services.User
 {
     public class UserService: IUserService
     {
-        private readonly IDatabase database;
+        private readonly IDatabase _database;
 
         public UserService()
         {
-            database = new Database.Database();
+            _database = new Database.Database();
         }
         public Account ValidateUser(string email, string password)
         {
-            var acc = database.FindAccountWithEmail(email);
+            var acc = _database.FindAccountWithEmail(email);
             if (acc != null)
             {
                 if (acc.password == password)

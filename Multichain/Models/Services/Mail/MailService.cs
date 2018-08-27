@@ -10,21 +10,21 @@ namespace Multichain.Models.Services.Mail
 {
     public class MailService: IMailServices
     {
-        private SmtpClient smtpClient;
+        private SmtpClient _smtpClient;
         public MailService()
         {
 
             var hostMail = WebConfigurationManager.AppSettings["HostMail"];
             var portMail = Convert.ToInt32(WebConfigurationManager.AppSettings["PortMail"]);
-            smtpClient = new SmtpClient(hostMail, portMail);
+            _smtpClient = new SmtpClient(hostMail, portMail);
 
-            smtpClient.UseDefaultCredentials = true;
+            _smtpClient.UseDefaultCredentials = true;
 
             var fromMail = WebConfigurationManager.AppSettings["MailFrom"];
             var passwordFromMail = WebConfigurationManager.AppSettings["PasswordMailFrom"];
-            smtpClient.Credentials = new NetworkCredential(fromMail, passwordFromMail);
+            _smtpClient.Credentials = new NetworkCredential(fromMail, passwordFromMail);
 
-            smtpClient.EnableSsl = true;
+            _smtpClient.EnableSsl = true;
         }
         public bool SendEmail(string context, string To)
         {
@@ -37,7 +37,7 @@ namespace Multichain.Models.Services.Mail
  
             try
             {
-                smtpClient.Send(msg);
+                _smtpClient.Send(msg);
                 return true;
             }
             catch

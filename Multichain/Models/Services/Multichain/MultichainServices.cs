@@ -12,7 +12,7 @@ namespace Multichain.Models.Services.Multichain
     public class MultichainServices:IMultichainServices
     {
 
-        MultichainController multichainControler;
+        private MultichainController _multichainControler;
         DBEntity database;
 
         private string chainName;
@@ -54,13 +54,13 @@ namespace Multichain.Models.Services.Multichain
 
         public void SetRequset(MultichainController multichainControler)
         {
-            this.multichainControler = multichainControler;
+            this._multichainControler = multichainControler;
             this.account = AccountRequest();
         }
 
         private Account AccountRequest()
         {
-            var bearerToken = multichainControler.Request.Headers.Authorization.ToString().Substring(7);
+            var bearerToken = _multichainControler.Request.Headers.Authorization.ToString().Substring(7);
             var account = database.Accounts.SingleOrDefault(acc => acc.beartoken == bearerToken);
             return account;
         }
@@ -94,13 +94,13 @@ namespace Multichain.Models.Services.Multichain
 
         public object GrantPermisstion(GrantPermissionInput input)
         { 
-            if (!AuthAccountWithBearerToken(input.address))
+            if (!AuthAccountWithBearerToken(input.Address))
                 return
                     Properties.Resources.UnValidAddress;
 
             var permission = ReadGrantFromBody(input);
 
-            var json = permissionManager.Grant(input.address, permission);
+            var json = permissionManager.Grant(input.Address, permission);
 
             return json;
         }
@@ -109,45 +109,45 @@ namespace Multichain.Models.Services.Multichain
         {
             var permission = "";
 
-            if (input.isAdmin)
+            if (input.IsAdmin)
                 permission += Permission.admin.ToString();
 
-            if (input.isReceive)
+            if (input.IsReceive)
             {
                 if (permission.Length > 0)
                     permission += ",";
                 permission += Permission.receive.ToString();
             }
 
-            if (input.isSend)
+            if (input.IsSend)
             {
                 if (permission.Length > 0)
                     permission += ",";
                 permission += Permission.send.ToString();
             }
 
-            if (input.isConnect)
+            if (input.IsConnect)
             {
                 if (permission.Length > 0)
                     permission += ",";else
                 permission += Permission.connect.ToString();
             }
 
-            if (input.isCreate)
+            if (input.IsCreate)
             {
                 if (permission.Length > 0)
                     permission += ",";
                 permission += Permission.create.ToString();
             }
 
-            if (input.isIssue)
+            if (input.IsIssue)
             {
                 if (permission.Length > 0)
                     permission += ",";
                 permission += Permission.issue.ToString();
             }
 
-            if (input.isMine)
+            if (input.IsMine)
             {
                 if (permission.Length > 0)
                     permission += ",";
@@ -155,7 +155,7 @@ namespace Multichain.Models.Services.Multichain
                 permission += Permission.mine.ToString();
             }
 
-            if (input.isActivate)
+            if (input.IsActivate)
             {
                 if (permission.Length > 0)
                     permission += ",";
@@ -166,24 +166,24 @@ namespace Multichain.Models.Services.Multichain
 
         public object IssueAsset(IssueAssetInput input)
         {
-            if (!AuthAccountWithBearerToken(input.address))
+            if (!AuthAccountWithBearerToken(input.Address))
                 return Properties.Resources.AccountNotFound;
 
-            var json = assetManager.IssueAsset(input.address, input.assetName, input.qty, input.unit, input.note);
+            var json = assetManager.IssueAsset(input.Address, input.AssetName, input.Qty, input.Unit, input.Note);
 
             return json;
         }
 
         public object CreateTransaction(CreateTransactionInput input)
         {
-            if (!AuthAccountWithBearerToken(input.addressFrom))
+            if (!AuthAccountWithBearerToken(input.AddressFrom))
                 return Properties.Resources.AccountNotFound;
 
             var result = transactionManager.CreateRawSendFrom(
-                addressFrom: input.addressFrom, 
-                addressTo: input.addressTo, 
-                assetname: input.assetName, 
-                qty: input.qty
+                addressFrom: input.AddressFrom, 
+                addressTo: input.AddressTo, 
+                assetname: input.AssetName, 
+                qty: input.Qty
             );
 
             return result;
@@ -191,20 +191,20 @@ namespace Multichain.Models.Services.Multichain
 
         public object SignTransaction(SignTransactionInput input)
         {
-            var t = database.Addresses.SingleOrDefault(address => address.email == account.email && address.addr == input.addressSign);
+            var t = database.Addresses.SingleOrDefault(address => address.email == account.email && address.addr == input.AddressSign);
             if (t == null)
                 return Properties.Resources.AccountNotFound;
 
             var privateKey = t.privateKey;
 
-            var result = transactionManager.SignRawTransaction(input.hexValue, privateKey);
+            var result = transactionManager.SignRawTransaction(input.HexValue, privateKey);
             return result;
         }
 
         public object SendTransaction(SendTransactionInput input)
         {
             var result = transactionManager.SendRawTransaction(
-                hex: input.hexValue
+                hex: input.HexValue
             );
             return result;
         }

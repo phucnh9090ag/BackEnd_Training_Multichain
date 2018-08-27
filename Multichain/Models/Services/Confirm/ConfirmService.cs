@@ -7,32 +7,32 @@ namespace Multichain.Models.Services.Confirm
     public class ConfirmService:IConfirmService
     {
 
-        private readonly IDatabase database;
-        private Address address;
-        private readonly IMultichainServices multichainServices;
+        private IDatabase _database;
+        private Address _address;
+        private readonly IMultichainServices _multichainServices;
 
         public ConfirmService()
         {
-            database = new Database.Database();
-            multichainServices = new MultichainServices();
+            _database = new Database.Database();
+            _multichainServices = new MultichainServices();
         }
 
         public object Confirm(ComfirmInput input)
         {
-            var account = database.FindAccountWithOTP(input.OTP);
+            var account = _database.FindAccountWithOTP(input.OTP);
             if (account != null)
             {
                 try
                 {
-                    address = multichainServices.CreateAddress();
-                    address.email = account.email;
+                    _address = _multichainServices.CreateAddress();
+                    _address.email = account.email;
 
-                    database.SaveAddress(address);
+                    _database.SaveAddress(_address);
 
                     account.OTP = null;
-                    database.getDatabase().SaveChanges();
+                    _database.getDatabase().SaveChanges();
 
-                    return new { email = account.email, address = address.addr };
+                    return new { email = account.email, address = _address.addr };
                 }
                 catch (Exception ex)
                 {

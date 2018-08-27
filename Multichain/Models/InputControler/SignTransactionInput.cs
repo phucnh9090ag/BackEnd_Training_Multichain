@@ -1,5 +1,5 @@
 ﻿public class SignTransactionInput
 {
-    public string addressSign { get; set; }
-    public string hexValue { get; set; }
+    public string AddressSign { get; set; }
+    public string HexValue { get; set; }
 }

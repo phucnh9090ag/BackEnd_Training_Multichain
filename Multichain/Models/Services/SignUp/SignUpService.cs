@@ -10,36 +10,36 @@ namespace Multichain.Models.Services.SignUp
     public class SignUpService:ISignUpService
     {
 
-        private Random rand;
-        private int MaxOTP = Convert.ToInt32(WebConfigurationManager.AppSettings["MaxOTP"]);
-        private int MinOTP = Convert.ToInt32(WebConfigurationManager.AppSettings["MinOTP"]);
+        private Random _rand;
+        private int _MaxOTP = Convert.ToInt32(WebConfigurationManager.AppSettings["MaxOTP"]);
+        private int _MinOTP = Convert.ToInt32(WebConfigurationManager.AppSettings["MinOTP"]);
 
-        private readonly IDatabase database;
-        private readonly IMailServices mailService;
-        private Account account;
+        private readonly IDatabase _database;
+        private readonly IMailServices _mailService;
+        private Account _account;
 
         public SignUpService()
         {
-            database = new Models.Database.Database();
-            mailService = new MailService();
-            account = new Account();
-            rand = new Random();
+            _database = new Models.Database.Database();
+            _mailService = new MailService();
+            _account = new Account();
+            _rand = new Random();
         }
 
         public object SignUp(SignUpInput input)
         {
-            account.email = input.email;
-            account.password = input.password;
+            _account.email = input.Email;
+            _account.password = input.Password;
 
-            if (isAccountValid(account))
+            if (isAccountValid(_account))
                 return JObject.Parse(Properties.Resources.AccountValidError);
 
-            account.OTP = CreateOTP();
+            _account.OTP = CreateOTP();
 
-            if (mailService.SendEmail(account.OTP, account.email))
+            if (_mailService.SendEmail(_account.OTP, _account.email))
             {
-                SaveDatabase(account);
-                return JObject.FromObject(new { email = account.email, message = Properties.Resources.SentEmailMessage });
+                SaveDatabase(_account);
+                return JObject.FromObject(new { email = _account.email, message = Properties.Resources.SentEmailMessage });
             }
             else
                 return JObject.FromObject(new { error = Properties.Resources.SendMailError });
@@ -48,16 +48,16 @@ namespace Multichain.Models.Services.SignUp
 
         public string CreateOTP()
         {
-            var _OTP = rand.Next(MinOTP, MaxOTP).ToString();
-            while (database.getDatabase().Accounts.Where(acc => acc.OTP == _OTP).Count() != 0)
-                _OTP = rand.Next(MinOTP, MaxOTP).ToString();
+            var _OTP = _rand.Next(_MinOTP, _MaxOTP).ToString();
+            while (_database.getDatabase().Accounts.Where(acc => acc.OTP == _OTP).Count() != 0)
+                _OTP = _rand.Next(_MinOTP, _MaxOTP).ToString();
 
             return _OTP;
         }
 
         public bool isAccountValid(Account account)
         {
-            var ac = database.getDatabase().Accounts.Find(account.email);
+            var ac = _database.getDatabase().Accounts.Find(account.email);
             if (ac != null)
                 return true;
             return false;
@@ -65,7 +65,7 @@ namespace Multichain.Models.Services.SignUp
 
         public bool SaveDatabase(Account account)
         {
-            database.SaveAccount(account);
+            _database.SaveAccount(account);
             return true;
         }
     }

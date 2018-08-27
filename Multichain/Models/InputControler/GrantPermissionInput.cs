@@ -1,12 +1,12 @@
 ﻿public class GrantPermissionInput
 {
-    public string address { get; set; }
-    public bool isAdmin { get; set; }
-    public bool isReceive { get; set; }
-    public bool isSend { get; set; }
-    public bool isConnect { get; set; }
-    public bool isCreate { get; set; }
-    public bool isIssue { get; set; }
-    public bool isMine { get; set; }
-    public bool isActivate { get; set; }
+    public string Address { get; set; }
+    public bool IsAdmin { get; set; }
+    public bool IsReceive { get; set; }
+    public bool IsSend { get; set; }
+    public bool IsConnect { get; set; }
+    public bool IsCreate { get; set; }
+    public bool IsIssue { get; set; }
+    public bool IsMine { get; set; }
+    public bool IsActivate { get; set; }
 }

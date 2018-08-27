@@ -10,11 +10,11 @@ namespace Multichain.Models.Services.Login
 {
     public class LoginService:ILoginService
     {
-        private readonly IDatabase database;
+        private IDatabase _database;
 
         public LoginService()
         {
-            database = new Database.Database();
+            _database = new Database.Database();
         }
 
         public object Login(LoginInput input)
@@ -22,8 +22,8 @@ namespace Multichain.Models.Services.Login
             using (var wb = new WebClient())
             {
                 var data = new NameValueCollection();
-                data["username"] = input.email;
-                data["password"] = input.password;
+                data["username"] = input.Email;
+                data["password"] = input.Password;
                 data["grant_type"] = Properties.Resources.grant_type_password;
 
                 try
@@ -36,14 +36,14 @@ namespace Multichain.Models.Services.Login
 
                     string responseInString = Encoding.UTF8.GetString(response);
 
-                    var account = database.FindAccountWithEmail(
-                        email: input.email
+                    var account = _database.FindAccountWithEmail(
+                        email: input.Email
                     );
 
                     if (account != null)
                     {
                         account.beartoken = JObject.Parse(responseInString)["access_token"].ToString();
-                        database.getDatabase().SaveChanges();
+                        _database.getDatabase().SaveChanges();
                     }
                     return responseInString;
                 }
