@@ -87,7 +87,7 @@ namespace Multichain.Models.Services.Multichain
             var privateKey = json["result"][0]["privkey"].ToString();
 
             addressManager.ImportAddress(address);
-            addressManager.ImportPrivateKey(privateKey);
+            //addressManager.ImportPrivateKey(privateKey);
 
             return new Address { addr = address, privateKey = privateKey };
         }

@@ -8,7 +8,6 @@ namespace FinalTestAPI.Model.Controllers
 {
     public class AccountController : ApiController
     {
-
         private readonly ISignUpService signupService;
         private readonly IConfirmService confirmService;
         private readonly ILoginService loginService;

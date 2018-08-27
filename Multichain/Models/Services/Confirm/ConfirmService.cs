@@ -9,7 +9,7 @@ namespace Multichain.Models.Services.Confirm
 
         private readonly IDatabase database;
         private Address address;
-        private IMultichainServices multichainServices;
+        private readonly IMultichainServices multichainServices;
 
         public ConfirmService()
         {
